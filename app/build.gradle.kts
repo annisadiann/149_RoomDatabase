@@ -52,7 +52,7 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.compose.icons)
     implementation(libs.bundles.room)
-    implementation(libs.room.compiler)
+    ksp(libs.room.compiler)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.navigation.compose)
