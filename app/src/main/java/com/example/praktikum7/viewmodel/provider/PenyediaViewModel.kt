@@ -1,33 +1,35 @@
 package com.example.praktikum7.viewmodel.provider
 
+import android.app.Application
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.createSavedStateHandle
+import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.praktikum7.repositori.AplikasiSiswa
+import com.example.praktikum7.viewmodel.DetailViewModel
 import com.example.praktikum7.viewmodel.EntryViewModel
+import com.example.praktikum7.repositori.AplikasiSiswa
 import com.example.praktikum7.viewmodel.HomeViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.CreationExtras
 
 object PenyediaViewModel {
     val Factory = viewModelFactory {
-
-        // HAPUS BARIS INI: val aplikasiSiswa = this.aplikasiSiswa()
-
         initializer {
-            // Pindah variabel ke sini, di mana 'this' adalah CreationExtras
-            val aplikasiSiswa = this.aplikasiSiswa()
-            HomeViewModel(
-                aplikasiSiswa.container.repositoriSiswa
-            )
+            HomeViewModel(aplikasiSiswa().container.repositoriSiswa)
         }
+        //edit: tambah initializer untuk SetailViewModel dan EditViewModel
         initializer {
-            // Ulangi untuk EntryViewModel
-            val aplikasiSiswa = this.aplikasiSiswa()
-            EntryViewModel(
-                aplikasiSiswa.container.repositoriSiswa
-            )
+            DetailViewModel(this.createSavedStateHandle(),
+                aplikasiSiswa().container.repositoriSiswa)
+        }
+
+        initializer {
+            EntryViewModel(aplikasiSiswa().container.repositoriSiswa)
         }
     }
 }
+/**
+ * Fungsi ekstensi query untuk objek [Application] dan mengembalikan sebuah
+ * instance dari [AplikasiSiswa].
+ */
 fun CreationExtras.aplikasiSiswa(): AplikasiSiswa =
     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as AplikasiSiswa)
